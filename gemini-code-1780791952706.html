@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع مسارك الآن - المنصة الشاملة والموثوقة</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --green-dark: #1E5128;      /* الأخضر الغامق */
+            --green-light: #4E9F3D;     /* الأخضر الفاتح */
+            --green-soft: #D8E9A8;      /* الأخضر التدريجي الناعم */
+            --white: #FFFFFF;
+            --gray-bg: #F4F7F6;
+            --text-color: #1E5128;
+            --card-border: #EAEAEA;
+            --whatsapp-color: #25D366;
+            --phone-color: #0284c7;
+            --danger-color: #dc2626;
+            --charity-color: #eab308;   /* لون مخصص لأزرار التبرعات */
+            --vip-gold: #fbbf24;        /* لون ذهبي مخصص للـ VIP */
+        }
+
+        body.dark-theme {
+            --gray-bg: #121212;
+            --white: #1E1E1E;
+            --text-color: #E0E0E0;
+            --card-border: #333333;
+            --green-dark: #4E9F3D;
+            --green-light: #D8E9A8;
+        }
+
+        body.dark-theme .navbar, 
+        body.dark-theme .filter-section, 
+        body.dark-theme .ad-card, 
+        body.dark-theme .finance-table,
+        body.dark-theme .complaints-box,
+        body.dark-theme .bot-box,
+        body.dark-theme .wallet-box,
+        body.dark-theme .trust-support-panel,
+        body.dark-theme .complaint-modal-content,
+        body.dark-theme .add-ad-form-box {
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+        }
+        body.dark-theme .ad-title, body.dark-theme .ad-card h3 { color: #FFFFFF; }
+        body.dark-theme .finance-table th { background-color: #2D2D2D; color: #FFF; }
+        body.dark-theme .trust-support-panel h2 { color: #FFFFFF; }
+        body.dark-theme .complaint-textarea, body.dark-theme .form-control { background-color: #2d2d2d; color: #fff; border-color: #444; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-color);
+            padding-bottom: 60px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* نظام الإشعارات الفورية الأعلى */
+        .notification-banner {
+            background-color: var(--green-dark);
+            color: white;
+            padding: 8px 15px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            display: none;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        /* شريط العنوان بارتفاع 60 بيكسل وتوزيع ثلاثي ثابت ومثالي */
+        .navbar {
+            background-color: var(--white);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between; 
+            align-items: center;
+            height: 60px; 
+            padding: 0 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0; 
+            z-index: 1000;
+            gap: 10px;
+            transition: background-color 0.3s;
+        }
+
+        /* حاوية اللوجو مع تأثير النبضات الخلفي المتحرك والاسم "مسارك الآن" بجانبه */
+        .logo-branding-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .logo-container-wrapper {
+            position: relative;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* خط النبضات المتعرج الذي يظهر خلف اللوجو مباشرة */
+        .pulse-line-background {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .main-svg-logo {
+            position: relative;
+            z-index: 2; /* في الأمام دائماً */
+        }
+        
+        .logo-text {
+            font-size: 19px; 
+            font-weight: 800;
+            color: var(--green-dark);
+            white-space: nowrap;
+            letter-spacing: -0.5px;
+            z-index: 2;
+        }
+
+        /* الأقسام في المنتصف مع شريط تمرير أفقي مخفي */
+        .nav-links-wrapper {
+            flex-grow: 1;
+            overflow-x: auto; 
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            padding: 0 5px;
+        }
+        
+        .nav-links-wrapper::-webkit-scrollbar { display: none; }
+        .nav-links-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .nav-links {
+            display: flex;
+            flex-direction: row; 
+            list-style: none;
+            gap: 6px;
+            white-space: nowrap; 
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            padding: 5px 10px;
+            transition: 0.3s;
+            font-size: 11px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        .nav-links li a:hover { 
+            color: var(--white); 
+            background-color: var(--green-light);
+        }
+
+        /* زر الإضاءة والوضع الليلي في أقصى اليسار دائماً */
+        .theme-toggle-btn {
+            background-color: var(--green-light);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .theme-toggle-btn:hover { background-color: var(--green-dark); }
+
+        /* الحاوية الرئيسية للمحتوى */
+        .main-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px 15px; 
+        }
+
+        .section-block { 
+            margin-bottom: 50px; 
+            scroll-margin-top: 80px; 
+        }
+
+        .section-heading { 
+            font-size: 22px; 
+            color: var(--green-dark); 
+            margin-bottom: 20px; 
+            border-right: 5px solid var(--green-light); 
+            padding-right: 10px; 
+            font-weight: bold;
+        }
+
+        /* تصميم قسم وبوكس إضافة الإعلانات المجاني للعملاء */
+        .add-ad-form-box {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            border-right: 5px solid var(--green-light);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .form-grid label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .form-control {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            font-size: 14px;
+            outline: none;
+            background-color: var(--white);
+            color: var(--text-color);
+            width: 100%;
+        }
+        
+        /* حاوية مرنة مخصصة للسعر مع اختيار العملة بحرية */
+        .price-currency-container {
+            display: flex;
+            gap: 8px;
+        }
+        .price-currency-container input {
+            flex-grow: 2;
+        }
+        .price-currency-container select {
+            flex-grow: 1;
+            max-width: 90px;
+            font-weight: bold;
+        }
+
+        /* نظام معاينة الصور المرفوعة قبل النشر */
+        .image-preview-wrapper {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .preview-thumbnail {
+            width: 75px;
+            height: 75px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 2px solid var(--green-light);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn-submit-ad {
+            background-color: var(--green-dark);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .btn-submit-ad:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* شبكة عرض الإعلانات */
+        .ads-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        /* تصميم كرت الإعلان المحترف والموحد */
+        .ad-card { 
+            background-color: var(--white); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            border: 1px solid var(--card-border); 
+            transition: 0.3s; 
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        .ad-card.featured-top { 
+            border: 2px solid var(--green-light); 
+            order: -1; 
+        }
+        .ad-card.vip-premium-style {
+            border: 2px solid var(--vip-gold);
+            box-shadow: 0 6px 15px rgba(251, 191, 36, 0.2);
+            order: -2;
+        }
+        .badge-star-featured {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--green-light);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .badge-vip-premium {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--vip-gold);
+            color: #111;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 800;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* صندوق الصور التوضيحية داخل الكروت */
+        .ad-image-box {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background-color: #cbd5e1;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .ad-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* حاوية المعاينة البصرية المتقدمة (العين الثاقبة 360 درجة والزوايا المتعددة) */
+        .inspection-view-360 { 
+            width: 100%; 
+            height: 200px; 
+            background-color: #ECECEC; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+
+        /* لوحة أزرار زوايا المشاهدة التفصيلية العميقة للسيارات والعقارات */
+        .deep-view-dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 8px;
+            background-color: rgba(30, 81, 40, 0.1);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .btn-deep-view {
+            background-color: var(--white);
+            color: var(--green-dark);
+            border: 1px solid var(--green-light);
+            padding: 5px 2px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .btn-deep-view:hover, .btn-deep-view.active-angle {
+            background-color: var(--green-light);
+            color: white;
+        }
+
+        /* حاوية أزرار التحكم بالدوران لسيارات الـ 360 درجة والسحب التلمسي السريع */
+        .rotation-controls {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            width: 100%;
+            bottom: 10px;
+            padding: 0 10px;
+            z-index: 15;
+            pointer-events: none;
+        }
+        .btn-rotate {
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            pointer-events: auto;
+        }
+
+        .ad-details { 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            flex-grow: 1; 
+        }
+        .ad-details h3 {
+            font-size: 16px;
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+        .ad-details p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .ad-price { 
+            font-size: 16px; 
+            color: var(--green-light); 
+            font-weight: bold; 
+            margin-top: auto; 
+        }
+        .ad-address {
+            font-size: 12px;
+            color: var(--green-dark);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* أزرار الإجراءات والاتصال المحدثة أسفل الكروت */
+        .ad-actions { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 6px; 
+            padding: 10px 15px; 
+            border-top: 1px solid var(--card-border);
+        }
+        .btn-action-sell {
+            background-color: var(--green-dark);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 12px;
+            grid-column: span 2;
+        }
+        .btn-action-sell:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .btn-ad-whatsapp {
+            background-color: var(--whatsapp-color);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+        .btn-ad-phone {
+            background-color: var(--phone-color);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+        .btn-ad-donation {
+            background-color: var(--charity-color);
+            color: #111827;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-decoration: none;
+            grid-column: span 2;
+            transition: 0.2s;
+        }
+        .btn-ad-donation:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .btn-ad-complaint {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            grid-column: span 2;
+        }
+
+        /* المحفظة الإلكترونية */
+        .wallet-box { 
+            background-color: var(--white); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-right: 5px solid var(--green-light); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .wallet-balance-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--green-light);
+        }
+        .btn-topup {
+            background-color: var(--green-dark);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* جداول البيانات المالية المنسقة في أعمدة متناسقة */
+        .finance-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background-color: var(--white); 
+            text-align: center; 
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        .finance-table th { background-color: var(--green-dark); color: var(--white); padding: 12px; font-size: 14px; }
+        .finance-table td { padding: 12px; border-bottom: 1px solid var(--card-border); font-weight: 600; font-size: 14px; }
+
+        /* كونسول البوت الذكي */
+        .bot-box {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border-right: 5px solid var(--green-light);
+        }
+        .bot-display-screen { 
+            background-color: #1E1E1E; 
+            color: #4E9F3D; 
+            padding: 15px; 
+            border-radius: 8px; 
+            min-height: 80px; 
+            margin-bottom: 15px; 
+            direction: ltr; 
+            text-align: left; 
+            overflow-y: auto; 
+            max-height: 150px; 
+            font-family: monospace; 
+        }
+        .btn-bot-action {
+            background-color: var(--green-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* مركز الاتصال والدعم */
+        .trust-support-panel {
+            background: var(--white);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            margin-top: 50px;
+        }
+        .trust-support-panel h2 {
+            font-size: 22px;
+            color: var(--green-dark);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .trust-support-panel p {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-trust-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 35px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #ffffff;
+            border-radius: 50px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 260px;
+        }
+        .btn-trust-action i { font-size: 20px; margin-left: 12px; }
+
+        .btn-whatsapp-style { background-color: var(--whatsapp-color); border: 1px solid #1ebd54; }
+        .btn-whatsapp-style:hover { background-color: #1ebd54; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+
+        .btn-phone-style { background-color: var(--phone-color); border: 1px solid #0369a1; }
+        .btn-phone-style:hover { background-color: #0369a1; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4); }
+
+        .trust-footer-badge {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--green-light);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* واجهة الـ Lightbox لعرض الصور */
+        .image-viewer-lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+        }
+        .lightbox-slider {
+            width: 85%; max-width: 700px;
+            height: 70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .lightbox-img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain; transition: transform 0.2s ease;
+            user-select: none;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; left: 20px;
+            color: white; font-size: 35px;
+            cursor: pointer; background: none; border: none;
+            z-index: 2100;
+        }
+        .lightbox-arrow {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            color: white; font-size: 40px;
+            background: none; border: none;
+            cursor: pointer; padding: 10px;
+            z-index: 2100;
+        }
+        .arrow-next { right: 10px; }
+        .arrow-prev { left: 10px; }
+
+        /* واجهة الشكاوى المنبثقة */
+        .complaint-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .complaint-modal-content {
+            background-color: var(--white);
+            padding: 25px; border-radius: 12px;
+            width: 100%; max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .complaint-textarea {
+            width: 100%; height: 120px;
+            padding: 10px; border-radius: 6px;
+            border: 1px solid var(--card-border);
+            resize: none; font-size: 14px;
+        }
+        .complaint-modal-actions {
+            display: flex; justify-content: flex-end; gap: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links-wrapper { justify-content: flex-start; }
+            .ad-actions { grid-template-columns: 1fr; }
+            .logo-text { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notification-banner" id="global-notification">🔔 إشعار جديد من منصة مسارك الآن...</div>
+
+    <nav class="navbar">
+        <div class="logo-branding-zone">
+            <div class="logo-container-wrapper">
+                <svg class="pulse-line-background" viewBox="0 0 100 100">
+                    <path d="M0,50 L30,50 L40,20 L50,80 L60,35 L68,58 L75,50 L100,50" fill="none" stroke="#4E9F3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <animate attributeName="stroke-dasharray" values="0,200;200,0;0,200" dur="3s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+                <svg class="main-svg-logo" width="42" height="42" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="43" fill="#FFFFFF" stroke="#1E5128" stroke-width="4"/>
+                    <text x="50" y="44" font-family="'Segoe UI', sans-serif" font-size="22" font-weight="900" fill="#4E9F3D" text-anchor="middle">MA</text>
+                    <g transform="translate(30, 50) scale(0.8)">
+                        <path d="M 5 15 L 18 15 M 18 15 Q 25 22 30 15 M 30 15 L 45 15" stroke="#1E5128" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <path d="M 10 20 Q 25 30 38 20" stroke="#4E9F3D" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    </g>
+                </svg>
+            </div>
+            <span class="logo-text">مسارك الآن</span>
+        </div>
+
+        <div class="nav-links-wrapper">
+            <ul class="nav-links">
+                <li><a href="#cars-section">السيارات</a></li>
+                <li><a href="#motorcycles-section">الدراجات النارية</a></li>
+                <li><a href="#real-estate-section">العقارات</a></li>
+                <li><a href="#electricity-section">الكهربائيات</a></li>
+                <li><a href="#electronics-section">الإلكترونيات</a></li>
+                <li><a href="#furniture-section">الأثاث المنزلي</a></li>
+                <li><a href="#jobs-section">الوظائف</a></li>
+                <li><a href="#courses-section">الكورسات</a></li>
+                <li><a href="#charity-section">الجمعيات والمستشفيات</a></li>
+                <li><a href="#finance-section">الأسعار والعملات</a></li>
+            </ul>
+        </div>
+
+        <button class="theme-toggle-btn" onclick="toggleDarkMode()">الوضع الداكن 🌙</button>
+    </nav>
+
+    <div class="main-container">
+
+        <div class="section-block">
+            <div class="add-ad-form-box">
+                <h3 style="color: var(--green-dark); font-weight: 700;"><i class="fas fa-bullhorn"></i> بوابة تنزيل الإعلانات للعملاء</h3>
+                <p style="font-size: 13px; color: #64748b; margin-top: 5px;">أضف تفاصيل إعلانك، وارفع صور منتجك، وسجل أرقام التواصل ليرتبط حساب الواتس والمكالمات بك مباشرة فور النشر:</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>اختر قسم الإعلان المستهدف:</label>
+                        <select class="form-control" id="form-ad-section">
+                            <option value="cars-grid">قسم السيارات</option>
+                            <option value="motorcycles-grid">قسم الدراجات النارية</option>
+                            <option value="real-estate-grid">قسم العقارات</option>
+                            <option value="electricity-grid">قسم الأدوات الكهربائية</option>
+                            <option value="electronics-grid">قسم الإلكترونيات والتقنية</option>
+                            <option value="furniture-grid">قسم الأثاث المنزلي</option>
+                            <option value="jobs-grid">قسم فرص العمل والوظائف</option>
+                            <option value="courses-grid">قسم الكورسات والتأهيل</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان الإعلان / المسمى:</label>
+                        <input type="text" class="form-control" id="form-ad-title" placeholder="مثال: لابتوب لينوفو ثينك باد">
+                    </div>
+                    <div class="form-group">
+                        <label>الميزانية / السعر والعملة المطلوبة:</label>
+                        <div class="price-currency-container">
+                            <input type="number" class="form-control" id="form-ad-price" placeholder="مثال: 4200">
+                            <select class="form-control" id="form-ad-currency">
+                                <option value="ل.س">ل.س</option>
+                                <option value="دولار">$ دولار</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الموقع / العنوان التفصيلي:</label>
+                        <input type="text" class="form-control" id="form-ad-address" placeholder="مثال: حلب - سيف الدولة">
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-phone-alt"></i> رقم صاحب الإعلان للاتصال المباشر:</label>
+                        <input type="tel" class="form-control" id="form-ad-owner-phone" placeholder="مثال: 0982657714">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fab fa-whatsapp"></i> رقم صاحب الإعلان للواتساب:</label>
+                        <input type="tel" class="form-control" id="form-ad-owner-whatsapp" placeholder="مثال: 963982657714">
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label><i class="fas fa-camera"></i> رفع صور المنتج / المعاينة الإعلانية:</label>
+                        <input type="file" class="form-control" id="form-ad-file" accept="image/*" onchange="previewSelectedPhotos(event)">
+                        <div class="image-preview-wrapper" id="photo-preview-zone"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>الوصف والشروط بالتفصيل:</label>
+                    <textarea class="form-control" id="form-ad-desc" style="height: 70px; resize: none;" placeholder="اكتب المواصفات، شروط العرض والاتصال بوضوح تام..."></textarea>
+                </div>
+                
+                <button class="btn-submit-ad" id="submit-ad-btn" onclick="publishCustomerAdWithVipCheck()">🚀 انشر إعلانك مجاناً وفي الصدارة الآن</button>
+            </div>
+        </div>
+
+        <div id="cars-section" class="section-block">
+            <div class="section-heading">قسم السيارات (معاينة بصرية كاملة مغنية عن الذهاب للموقع)</div>
+            <div class="ads-grid" id="cars-grid">
+                <div class="ad-card">
+                    <div class="deep-view-dashboard">
+                        <button class="btn-deep-view active-angle" onclick="switchCarAngle('front_360', this)">رؤية 360°</button>
+                        <button class="btn-deep-view" onclick="switchCarAngle('interior', this)">الفرش الداخلي</button>
+                        <button class="btn-deep-view" onclick="switchCarAngle('right', this)">الجانب الأيمن</button>
+                        <button class="btn-deep-view" onclick="switchCarAngle('left', this)">الجانب الأيسر</button>
+                        <button class="btn-deep-view" onclick="switchCarAngle('front', this)">الواجهة الأمامية</button>
+                        <button class="btn-deep-view" onclick="switchCarAngle('back', this)">الخلفية</button>
+                    </div>
+                    <div class="inspection-view-360" id="car-inspection-container">
+                        <span class="badge-star-featured" id="car-angle-badge">📸 زاوية عرض نشطة</span>
+                        <img id="car-360-image" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&auto=format&fit=crop&q=80" style="width:100%; height:100%; object-fit:cover;" onclick="openGallery('kia')">
+                        <div class="rotation-controls" id="car-rotator-ui">
+                            <button class="btn-rotate" onclick="rotateCarView('right')">🔄 تدوير لليمين</button>
+                            <button class="btn-rotate" onclick="rotateCarView('left')">🔄 تدوير لليسار</button>
+                        </div>
+                    </div>
+                    <div class="ad-details">
+                        <h3>كيا سبورتيج صدارة - مواصفات كاملة</h3>
+                        <p>سيارة ممتازة بحالة الوكالة، كاملة المواصفات، عداد ممشى قليل جداً، صيانة دورية مجانية جاهزة للتسليم الفوري.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> dمشق - تنظيم كفرسوسة</div>
+                        <div class="ad-price">420,000,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('كيا سبورتيج صدارة', 420000000)">إتمام الصفقة الخاطفة (خصم عمولة 0.2%)</button>
+                        <a href="https://wa.me/963982657714?text=مرحباً، أنا مهتم بخصوص إعلان سيارة كيا سبورتيج صدارة" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال مباشر</a>
+                        <button class="btn-ad-complaint" onclick="openComplaintModal('كيا سبورتيج صدارة')"><i class="fas fa-exclamation-triangle"></i> تقديم شكوى</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="motorcycles-section" class="section-block">
+            <div class="section-heading">قسم الدراجات النارية والرايس البورسلان</div>
+            <div class="ads-grid" id="motorcycles-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box" onclick="openGallery('bike')">
+                        <span class="badge-star-featured">دراجة رياضية</span>
+                        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&auto=format&fit=crop&q=80" alt="دراجة نارية">
+                    </div>
+                    <div class="ad-details">
+                        <h3>دراجة نارية سوزوكي ريس 1000 سي سي بحالة ممتازة</h3>
+                        <p>دراجة نارية جبارة، محرك قاصم وجاهز تماماً، إطارات جديدة، لم تتعرض لأي حوادث مسبقاً، مجهزة بالكامل.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> اللاذقية - المشروع الأول</div>
+                        <div class="ad-price">45,000,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('سوزوكي ريس', 45000000)">شراء فوري عبر المحفظة</button>
+                        <a href="https://wa.me/963982657714?text=مرحباً، أنا مهتم بخصوص دراجة سوزوكي ريس" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> تواصل</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="real-estate-section" class="section-block">
+            <div class="section-heading">قسم العقارات والبيع والإيجار (نظام العين الثاقبة الفوري)</div>
+            <div class="ads-grid" id="real-estate-grid">
+                <div class="ad-card">
+                    <div class="deep-view-dashboard">
+                        <button class="btn-deep-view active-angle" onclick="switchEstateAngle('exterior', this)">الخارج والواجهة</button>
+                        <button class="btn-deep-view" onclick="switchEstateAngle('salon', this)">الصالون الرئيسي</button>
+                        <button class="btn-deep-view" onclick="switchEstateAngle('rooms', this)">غرف النوم</button>
+                        <button class="btn-deep-view" onclick="switchEstateAngle('bathroom', this)">الحمام</button>
+                        <button class="btn-deep-view" onclick="switchEstateAngle('kitchen', this)">المطبخ</button>
+                        <button class="btn-deep-view" onclick="switchEstateAngle('heights', this)">المرتفعات والإطلالة</button>
+                    </div>
+                    <div class="ad-image-box">
+                        <span class="badge-star-featured" style="background-color: var(--green-dark);" id="estate-angle-badge">شقة سكنية - المظهر الخارجي</span>
+                        <img id="estate-main-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=80" alt="عقارات" onclick="openGallery('villa')">
+                    </div>
+                    <div class="ad-details">
+                        <h3>فيلا مودرن فاخرة للبيع بتصميم عصري</h3>
+                        <p>فيلا دورين وملحق في حي راقٍ ومميز، تحتوي على مسبح خاص، نظام ذكي بالكامل، وحديقة ترفيهية واسعة ومجهزة.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> حلب - الشهباء الجديدة</div>
+                        <div class="ad-price">2,200,000,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('فيلا مودرن فاخرة', 2200000000)">إتمام الصفقة وحجز العقار فوراً</button>
+                        <a href="https://wa.me/963982657714?text=أنا مهتم بخصوص إعلان الفيلا المودرن" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="electricity-section" class="section-block">
+            <div class="section-heading">قسم الأدوات الكهربائية والمنزلية</div>
+            <div class="ads-grid" id="electricity-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box">
+                        <span class="badge-star-featured" style="background-color: #0284c7;">توفير طاقة</span>
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&auto=format&fit=crop&q=80" alt="كهربائيات">
+                    </div>
+                    <div class="ad-details">
+                        <h3>غسالة إل جي ديجيتال إنفيرتر 9 كيلو غرام</h3>
+                        <p>نظام ذكي موفر للطاقة بنسبة 40%، صوت هادئ تماماً، كفالة حقيقية لمدة 5 سنوات، متوفرة باللون الفضي المحمي.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - الفحامة</div>
+                        <div class="ad-price">18,500,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('غسالة إل جي', 18500000)">طلب حجز الغسالة</button>
+                        <a href="https://wa.me/963982657714?text=مهتم بخصوص غسالة إل جي" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="electronics-section" class="section-block">
+            <div class="section-heading">قسم الإلكترونيات والهواتف الذكية</div>
+            <div class="ads-grid" id="electronics-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box">
+                        <span class="badge-star-featured">أحدث إصدار</span>
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80" alt="الكترونيات">
+                    </div>
+                    <div class="ad-details">
+                        <h3>آيفون 15 برو ماكس - سعة 512 جيجابايت</h3>
+                        <p>جهاز جديد كلياً بصندوقه المغلق، نسخة عالمية، مع ميزة الشحن السريع الفائق واللون التيتانيوم الطبيعي الجذاب.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> حمص - شارع الحضارة</div>
+                        <div class="ad-price">26,000,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('آيفون 15 برو', 26000000)">شراء فوري</button>
+                        <a href="https://wa.me/963982657714?text=مهتم بخصوص آيفون 15 برو ماكس" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="furniture-section" class="section-block">
+            <div class="section-heading">قسم الأثاث المنزلي والمفروشات والديكور</div>
+            <div class="ads-grid" id="furniture-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box">
+                        <span class="badge-star-featured" style="background-color: var(--green-dark);">خشب زان مرن</span>
+                        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&auto=format&fit=crop&q=80" alt="أثاث">
+                    </div>
+                    <div class="ad-details">
+                        <h3>طقم كنب صالون مودرن فاخر يتسع لـ 9 أشخاص</h3>
+                        <p>مصنوع من أجود أنواع الخشب الزان المتين، إسفنج ضغط عالي مريح جداً، قماش تركي فاخر قابل للغسل السريع.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> حماة - غرب المشتل</div>
+                        <div class="ad-price">12,000,000 ل.س</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('طقم كنب مودرن', 12000000)">تأكيد حجز الطقم</button>
+                        <a href="https://wa.me/963982657714?text=بخصوص طقم الكنب صالون المودرن" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="jobs-section" class="section-block">
+            <div class="section-heading">قسم فرص العمل والوظائف المتاحة حالياً</div>
+            <div class="ads-grid" id="jobs-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #e2e8f0; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-briefcase" style="font-size: 50px; color: var(--green-dark);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مطلوب موظفة استقبال وعلاقات عامة</h3>
+                        <p>مطلوب موظفة للعمل لدى شركة تجارية كبرى. الشروط: إجادة استخدام الحاسوب، اللباقة في التعامل، وتحمل ضغط العمل اليومي المتواصل.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - شارع بغداد</div>
+                        <div class="ad-price">الراتب: يحدد بعد المقابلة</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('موظفة استقبال', 0)">تقديم السيرة الذاتية عبر البوت</button>
+                        <a href="https://wa.me/963982657714?text=أرغب بالتقديم لوظيفة موظفة الاستقبال" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> تقديم عبر واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="courses-section" class="section-block">
+            <div class="section-heading">قسم الكورسات والتعليم والتأهيل المهني</div>
+            <div class="ads-grid" id="courses-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #e2e8f0; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-graduation-cap" style="font-size: 50px; color: var(--green-dark);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>دورة المحادثة المتقدمة في اللغة الإنجليزية</h3>
+                        <p>تأهيل شامل للمقابلات والوظائف الدولية مع مدربين ناطقين باللغة كأهلها الأصليين. شهادة معتمدة بنهاية المسار.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> حمص - الدبلان</div>
+                        <div class="ad-price">التكلفة: مخفضة للطلاب</div>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn-action-sell" onclick="triggerAutoBotSale('كورس إنجليزي', 0)">حجز مقعد فوراً</button>
+                        <a href="https://wa.me/963982657714?text=استفسار بخصوص كورس اللغة الإنجليزية المتقدم" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> استفسار</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="charity-section" class="section-block">
+            <div class="section-heading">دليل المستشفيات والمؤسسات الخيرية والإنسانية الكامل</div>
+            <div class="ads-grid" id="charity-grid">
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #fee2e2; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-hospital-user" style="font-size: 50px; color: var(--danger-color);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مستشفى دمشق (المجتهد) - العام</h3>
+                        <p>تقديم كافة الخدمات الطبية والجراحية والإسعافية المتكاملة للمواطنين على مدار الساعة بجهود الكوادر الوطنية كفاءة ممتازة.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - منطقة المجتهد</div>
+                        <div class="ad-price" style="color:var(--phone-color);">مستشفى حكومي عام</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=استفسار طبي بخصوص مشفى المجتهد" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> استفسار واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال سريع</a>
+                        <button class="btn-ad-donation" onclick="processDonation('مستشفى المجتهد العام')"><i class="fas fa-heart"></i> تقديم دعم أو تبرع فوري</button>
+                    </div>
+                </div>
+
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #e0f2fe; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-clinic-medical" style="font-size: 50px; color: var(--phone-color);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مستشفى المواساة الجامعي</h3>
+                        <p>الصرح التعليمي والطبي الأكبر للعمليات الجراحية المعقدة والعيادات التخصصية بكفاءة بروفيسورات جامعة دمشق.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - المزة / تجمع المشافي</div>
+                        <div class="ad-price" style="color:var(--phone-color);">مستشفى تعليمي عام</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=تنسيق حالة طبية لمستشفى المواساة" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> تنسيق الحالات</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال سريع</a>
+                        <button class="btn-ad-donation" onclick="processDonation('مستشفى المواساة الجامعي')"><i class="fas fa-heart"></i> تقديم دعم أو تبرع فوري</button>
+                    </div>
+                </div>
+
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #f1f5f9; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-shield-heart" style="font-size: 50px; color: var(--green-dark);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مستشفى الشرطة العسكري</h3>
+                        <p>تقديم الرعاية الطبية الشاملة والخدمات الجراحية المتكاملة لرجال قوى الأمن الداخلي والعسكريين وعائلاتهم بجاهزية تامة.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> ريف دمشق - حرستا</div>
+                        <div class="ad-price" style="color:var(--green-dark);">مستشفى تخصصي وطني</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=تواصل مع مشفى الشرطة العسكري" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال بالطوارئ</a>
+                        <button class="btn-ad-donation" onclick="processDonation('مستشفى الشرطة العسكري')"><i class="fas fa-heart"></i> تبرع أو دعم المستشفى</button>
+                    </div>
+                </div>
+
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #fae8ff; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-ribbon" style="font-size: 50px; color: #a21caf;"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مستشفى البيروني الجامعي لمعالجة الأورام والسرطان</h3>
+                        <p>المركز الوطني الرائد لتقديم العلاج الكيميائي والإشعاعي المجاني والرعاية التلطيفية لمرضى الأورام من كافة المحافظات.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - حرستا / المزة</div>
+                        <div class="ad-price" style="color:#a21caf;">مركز الأورام المجاني</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=استفسار بخصوص جرعات مشفى البيروني للأورام" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> تنسيق العلاج</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال مباشر</a>
+                        <button class="btn-ad-donation" onclick="processDonation('مستشفى البيروني للسرطان')"><i class="fas fa-heart"></i> تبرع لدعم جرعات المرضى</button>
+                    </div>
+                </div>
+
+                <div class="ad-card">
+                    <div class="ad-image-box" style="background-color: #f0fdf4; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-wheelchair" style="font-size: 50px; color: var(--green-light);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>مستشفى والمركز الوطني لتأهيل المعوقين والمكفوفين</h3>
+                        <p>تقديم خدمات العلاج الفيزيائي، الأطراف الصناعية، التعليم المتخصص بلغة برايل، وإعادة الإدماج المجتمعي لذوي الهمم.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> دمشق - شارع الثورة</div>
+                        <div class="ad-price" style="color:var(--green-light);">مركز تأهيل وعناية عام</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=تواصل مع مركز تأهيل المعوقين والمكفوفين" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> تواصل مباشر</a>
+                        <button class="btn-ad-donation" onclick="processDonation('مستشفى تأهيل المعوقين والمكفوفين')"><i class="fas fa-heart"></i> دعم أنشطة ذوي الهمم</button>
+                    </div>
+                </div>
+
+                <div class="ad-card" style="border: 2px dashed var(--green-light);">
+                    <div class="ad-image-box" style="background-color: #fef3c7; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-mosque" style="font-size: 50px; color: var(--charity-color);"></i>
+                    </div>
+                    <div class="ad-details">
+                        <h3>جمعية مسارك الآن الخيرية والإنسانية</h3>
+                        <p>الذراع الإنساني للموقع الموجه بالكامل لتجميع وإيصال التبرعات المباشرة إلى <b>المساجد، كفالة الأيتام، ودعم الأرامل والمحتاجين</b>.</p>
+                        <div class="ad-address"><i class="fas fa-map-marker-alt"></i> كافة المحافظات السورية</div>
+                        <div class="ad-price" style="color:var(--green-dark); font-weight:800;">جمعية تابعة للبوابة 🕊️</div>
+                    </div>
+                    <div class="ad-actions">
+                        <a href="https://wa.me/963982657714?text=مرحباً جمعية مسارك الآن، أرغب بتقديم طلب كفالة أو بناء" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> تقديم طلب كفالة</a>
+                        <a href="tel:+963982657714" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                        <button class="btn-ad-donation" style="background-color: var(--green-dark); color:white;" onclick="processDonation('جمعية مسارك الآن (أيتام ومساجد)')"><i class="fas fa-hand-holding-heart"></i> تبرع كفالة وإعمار فوري</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="finance-section" class="section-block">
+            <div class="section-heading">لوحة البيانات المالية والعملات الحية</div>
+            
+            <h4 style="margin-bottom: 10px; color: var(--green-dark); font-weight: 700;"><i class="fas fa-money-bill-wave"></i> جدول أسعار الصرف والعملات (مقابل الليرة السورية)</h4>
+            <table class="finance-table">
+                <thead>
+                    <tr>
+                        <th>العملة / الأداة المالية</th>
+                        <th>السعر الحالي (ل.س)</th>
+                        <th>مستوى التغير اليومي</th>
+                        <th>حالة مؤشر السوق</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>الدولار الأمريكي (USD)</td><td>14,800</td><td style="color: #25D366;">+0.12%</td><td>مستقر نسبياً</td></tr>
+                    <tr><td>اليورو الأوروبي (EUR)</td><td>16,150</td><td style="color: #dc2626;">-0.05%</td><td>هبوط طفيف</td></tr>
+                    <tr><td>الليرة التركية (TRY)</td><td>435</td><td style="color: #25D366;">+0.22%</td><td>نشط</td></tr>
+                    <tr><td>الدينار الأردني (JOD)</td><td>20,850</td><td style="color: #cbd5e1;">0.00%</td><td>ثابت</td></tr>
+                    <tr><td>الدينار الكويتي (KWD)</td><td>48,100</td><td style="color: #25D366;">+0.45%</td><td>صعود تدريجي</td></tr>
+                    <tr><td>الليرة اللبنانية (LBP)</td><td>0.16</td><td style="color: #cbd5e1;">0.00%</td><td>جمود</td></tr>
+                    <tr><td>الجنيه المصري (EGP)</td><td>310</td><td style="color: #dc2626;">-0.15%</td><td>تذبذب طفيف</td></tr>
+                    <tr><td>الدينار الليبي (LYD)</td><td>3,050</td><td style="color: #25D366;">+0.08%</td><td>مستقر</td></tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top: 30px; margin-bottom: 10px; color: var(--green-dark); font-weight: 700;"><i class="fas fa-gem"></i> بورصة المعادن الثمينة والذهب والفضة</h4>
+            <table class="finance-table">
+                <thead>
+                    <tr>
+                        <th>المعدن الثمين / العيار والنقاوة</th>
+                        <th>السعر التقديري الحالي (ل.س)</th>
+                        <th>مستوى التغير اليومي</th>
+                        <th>حالة مؤشر البورصة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>الذهب غرام عيار 18</td><td>844,200</td><td style="color: #25D366;">+1.35%</td><td>طلب مرتفع</td></tr>
+                    <tr><td>الذهب غرام عيار 21</td><td>985,000</td><td style="color: #25D366;">+1.40%</td><td>صعود قوي</td></tr>
+                    <tr><td>الذهب غرام عيار 24 (نقاوة 995)</td><td>1,125,000</td><td style="color: #25D366;">+1.42%</td><td>ممتاز للادخار</td></tr>
+                    <tr><td>الأونصة العالمية للذهب</td><td>34,200,000</td><td style="color: #25D366;">+0.85%</td><td>ارتفاع عالمي</td></tr>
+                    <tr><td>الليرة الذهبية الإنجليزية</td><td>8,150,000</td><td style="color: #25D366;">+1.10%</td><td>مستقرة وصاعدة</td></tr>
+                    <tr><td>الفضة غرام عيار 900</td><td>12,500</td><td style="color: #25D366;">+0.30%</td><td>مستقر</td></tr>
+                    <tr><td>الفضة غرام (نقاوة 995 / الخام)</td><td>14,100</td><td style="color: #25D366;">+0.55%</td><td>صعود نسبي</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-block" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <div class="wallet-box">
+                <div>
+                    <h4 style="font-weight: 700; color: var(--green-dark);"><i class="fas fa-wallet"></i> المحفظة الإلكترونية الرقمية</h4>
+                    <p style="font-size: 13px; color:#64748b; margin-top:3px;">رصيدك المتاح لتنفيذ العمليات الفورية والتبرعات الإنسانية:</p>
+                </div>
+                <div class="wallet-balance-amount" id="user-wallet-balance">500,000 ل.س</div>
+                <button class="btn-topup" onclick="topupWallet()">شحن رصيد المحفظة</button>
+            </div>
+
+            <div class="bot-box">
+                <h4 style="font-weight: 700; color: var(--green-dark); margin-bottom: 8px;"><i class="fas fa-robot"></i> كونسول معالجة العمليات والصفقات الآلية</h4>
+                <div class="bot-display-screen" id="bot-screen">> System ready. Operational auto-moderation active 24/7.</div>
+                <button class="btn-bot-action" onclick="clearBotConsole()">تطهير السجل</button>
+            </div>
+        </div>
+
+        <div class="trust-support-panel">
+            <h2>مركز الاتصال والدعم الفني المباشر</h2>
+            <p>فريق خدمة عملاء مسارك الآن متواجد على مدار 24 ساعة للإجابة على الاستفسارات الفنية وحل المشكلات الفورية للمستخدمين.</p>
+            <div class="buttons-wrapper">
+                <a href="https://wa.me/963982657714" target="_blank" class="btn-trust-action btn-whatsapp-style">
+                    <i class="fab fa-whatsapp"></i> الدعم عبر واتساب
+                </a>
+                <a href="tel:+963982657714" class="btn-trust-action btn-phone-style">
+                    <i class="fas fa-phone-alt"></i> اتصل بنا الآن
+                </a>
+            </div>
+            <div class="trust-footer-badge">
+                <i class="fas fa-shield-alt"></i> جميع المعاملات والاتصالات مشفرة وآمنة تماماً 100%
+            </div>
+        </div>
+
+    </div>
+
+    <div class="image-viewer-lightbox" id="lightbox-window">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <button class="lightbox-arrow arrow-prev" onclick="changeLightboxImage(-1)">&#10094;</button>
+        <div class="lightbox-slider">
+            <img src="" class="lightbox-img" id="lightbox-active-img">
+        </div>
+        <button class="lightbox-arrow arrow-next" onclick="changeLightboxImage(1)">&#10095;</button>
+    </div>
+
+    <div class="complaint-modal" id="complaint-window">
+        <div class="complaint-modal-content">
+            <h3 style="color: var(--danger-color);" id="complaint-target-title">تقديم بلاغ / شكوى</h3>
+            <textarea class="complaint-textarea" id="complaint-text" placeholder="اكتب تفاصيل بلاغك هنا..."></textarea>
+            <div class="complaint-modal-actions">
+                <button style="background:#cbd5e1; color:#333; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;" onclick="closeComplaintModal()">إلغاء</button>
+                <button style="background:var(--danger-color); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;" onclick="submitComplaint()">إرسال البلاغ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // نظام مراقبة البوت التلقائي المخفي وعقوبات المستخدم المخالف (24/24 ساعة)
+        let userViolationCount = 0;
+        const forbiddenKeywords = ["سب", "شتم", "وسخ", "قذر", "بذيء", "مسيء", "حرام", "نصب", "إباحي"];
+
+        function runInvisibleAdBotScan(title, desc) {
+            const compiledText = (title + " " + desc).toLowerCase();
+            let containsInappropriateStuff = false;
+            
+            for (let word of forbiddenKeywords) {
+                if (compiledText.includes(word)) {
+                    containsInappropriateStuff = true;
+                    break;
+                }
+            }
+            return containsInappropriateStuff;
+        }
+
+        // إعدادات الوضع الداكن التلقائي والتبديل الجمالي
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            document.querySelector('.theme-toggle-btn').innerText = isDark ? "الوضع الصباحي ☀️" : "الوضع الداكن 🌙";
+        }
+
+        // ميزة العين الثاقبة للسيارة: دوران فني متكامل لنفس السيارة الحالية دون تبديل الموديل
+        const carAngleDatabase = {
+            front_360: [
+                "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&auto=format&fit=crop&q=80", 
+                "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&auto=format&fit=crop&q=80", 
+                "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80"
+            ],
+            interior: ["https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=600&auto=format&fit=crop&q=80"],
+            right: ["https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop&q=80"],
+            left: ["https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop&q=80"],
+            front: ["https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600&auto=format&fit=crop&q=80"],
+            back: ["https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&auto=format&fit=crop&q=80"]
+        };
+        
+        let activeCarMode = "front_360";
+        let currentCarRotationIndex = 0;
+
+        function switchCarAngle(mode, btnElement) {
+            activeCarMode = mode;
+            currentCarRotationIndex = 0;
+            
+            // تحديث الأزرار النشطة للتنسيق والتحكم بالدوران
+            const container = btnElement.parentElement;
+            container.querySelectorAll('.btn-deep-view').forEach(btn => btn.classList.remove('active-angle'));
+            btnElement.classList.add('active-angle');
+            
+            const imgElement = document.getElementById('car-360-image');
+            const rotatorUI = document.getElementById('car-rotator-ui');
+            const badge = document.getElementById('car-angle-badge');
+            
+            imgElement.src = carAngleDatabase[mode][0];
+            
+            if (mode === 'front_360') {
+                rotatorUI.style.display = 'flex';
+                badge.innerText = "📸 رؤية 360° نشطة";
+            } else {
+                rotatorUI.style.display = 'none';
+                badge.innerText = `📸 زاوية: ${btnElement.innerText}`;
+            }
+            printToBot(`Car angle mode modified to: ${mode}`);
+        }
+
+        function rotateCarView(direction) {
+            if (activeCarMode !== 'front_360') return;
+            const images = carAngleDatabase['front_360'];
+            
+            if (direction === 'right') {
+                currentCarRotationIndex = (currentCarRotationIndex + 1) % images.length;
+            } else {
+                currentCarRotationIndex = (currentCarRotationIndex - 1 + images.length) % images.length;
+            }
+            document.getElementById('car-360-image').src = images[currentCarRotationIndex];
+            printToBot(`Car pulse-rotation index updated: ${currentCarRotationIndex}`);
+        }
+
+        // ميزة العين الثاقبة للعقارات: معاينة بصرية كاملة للغرف والصالونات دون الذهاب الفعلي
+        const estateAngleDatabase = {
+            exterior: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=80",
+            salon: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&auto=format&fit=crop&q=80",
+            rooms: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&auto=format&fit=crop&q=80",
+            bathroom: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&auto=format&fit=crop&q=80",
+            kitchen: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&auto=format&fit=crop&q=80",
+            heights: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&auto=format&fit=crop&q=80"
+        };
+
+        function switchEstateAngle(angleKey, btnElement) {
+            const container = btnElement.parentElement;
+            container.querySelectorAll('.btn-deep-view').forEach(btn => btn.classList.remove('active-angle'));
+            btnElement.classList.add('active-angle');
+            
+            document.getElementById('estate-main-img').src = estateAngleDatabase[angleKey];
+            document.getElementById('estate-angle-badge').innerText = `شقة سكنية - المعاينة الحية: ${btnElement.innerText}`;
+            printToBot(`Estate view navigated to internal asset segment: ${angleKey}`);
+        }
+
+        // معارض الصور للـ Lightbox
+        const galleries = {
+            kia: [
+                "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&auto=format&fit=crop&q=80"
+            ],
+            villa: [
+                "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=80"
+            ],
+            bike: [
+                "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&auto=format&fit=crop&q=80"
+            ]
+        };
+        let currentGallery = [];
+        let galleryIndex = 0;
+
+        function openGallery(key) {
+            currentGallery = galleries[key] || [];
+            galleryIndex = 0;
+            if(currentGallery.length > 0) {
+                document.getElementById('lightbox-active-img').src = currentGallery[galleryIndex];
+                document.getElementById('lightbox-window').style.display = 'flex';
+            }
+        }
+        function closeLightbox() { document.getElementById('lightbox-window').style.display = 'none'; }
+        function changeLightboxImage(step) {
+            if(!currentGallery.length) return;
+            galleryIndex = (galleryIndex + step + currentGallery.length) % currentGallery.length;
+            document.getElementById('lightbox-active-img').src = currentGallery[galleryIndex];
+        }
+
+        // إدارة الشكاوى والبلاغات
+        function openComplaintModal(title) {
+            document.getElementById('complaint-target-title').innerText = `تقديم بلاغ ضد: ${title}`;
+            document.getElementById('complaint-window').style.display = 'flex';
+        }
+        function closeComplaintModal() { document.getElementById('complaint-window').style.display = 'none'; }
+        function submitComplaint() {
+            const txt = document.getElementById('complaint-text').value;
+            if(!txt.trim()) return alert("يرجى كتابة تفاصيل البلاغ أولاً.");
+            alert("تم استلام بلاغك بنجاح، وجاري مراجعة الإعلان من قبل الإدارة.");
+            document.getElementById('complaint-text').value = '';
+            closeComplaintModal();
+        }
+
+        // إدارة عمليات الكونسول والمحفظة والتبرعات الفورية
+        let walletBalance = 500000;
+        let globalUploadedImgData = ""; // تخزين قاعدة الصورة المرفوعة مؤقتاً
+
+        function printToBot(msg) {
+            const screen = document.getElementById('bot-screen');
+            screen.innerHTML += `<br>> ${msg}`;
+            screen.scrollTop = screen.scrollHeight;
+        }
+        function clearBotConsole() { document.getElementById('bot-screen').innerHTML = `> System initialized. Moderation system shielding 24/7.`; }
+
+        function triggerAutoBotSale(itemName, price) {
+            printToBot(`Initiating secure flash transaction for: ${itemName}`);
+            if(price > 0) {
+                if(walletBalance >= price) {
+                    walletBalance -= price;
+                    document.getElementById('user-wallet-balance').innerText = `${walletBalance.toLocaleString()} ل.س`;
+                    printToBot(`Success! Order verified. Deducted: ${price} SYP. Fees 0.2% waived.`);
+                    showNotification(`🎉 تمت صفقة ${itemName} بنجاح عبر المحفظة وحجزها نهائياً!`);
+                } else {
+                    printToBot(`Error: Insufficient balance. Required: ${price} SYP.`);
+                    alert("رصيد المحفظة الإلكترونية لا يكفي لإتمام هذه الصفقة الفورية تلقائياً.");
+                }
+            } else {
+                printToBot(`Operational redirect to career submission data interface.`);
+                showNotification(`🚀 تم إرسال طلبك والملف الفني بنجاح!`);
+            }
+        }
+
+        function processDonation(hospitalName) {
+            const donationAmount = 50000;
+            if(walletBalance >= donationAmount) {
+                walletBalance -= donationAmount;
+                document.getElementById('user-wallet-balance').innerText = `${walletBalance.toLocaleString()} ل.س`;
+                printToBot(`Donation system verified. Transferred ${donationAmount} SYP directly to ${hospitalName}.`);
+                showNotification(`❤️ شكرًا لك! تم إرسال تبرع بقيمة 50,000 ل.س إلى ${hospitalName} بنجاح.`);
+            } else {
+                printToBot(`Donation Failed: Insufficient funds to clear 50,000 SYP.`);
+                alert("رصيد محفظتك الرقمية أقل من الحد الأدنى المقترح للتبرع الفوري (50,000 ل.س)، يرجى شحنها أولاً.");
+            }
+        }
+
+        function topupWallet() {
+            walletBalance += 250000;
+            document.getElementById('user-wallet-balance').innerText = `${walletBalance.toLocaleString()} ل.س`;
+            printToBot(`Wallet deposit confirmed: +250,000 SYP.`);
+        }
+
+        function showNotification(text) {
+            const banner = document.getElementById('global-notification');
+            banner.innerText = text;
+            banner.style.display = 'block';
+            setTimeout(() => { banner.style.display = 'none'; }, 6000);
+        }
+
+        // أداة البحث الحية وعرض ومعاينة الصور قبل الرفع النهائي الفعلي ليراها العميل
+        function previewSelectedPhotos(event) {
+            const previewZone = document.getElementById('photo-preview-zone');
+            previewZone.innerHTML = "";
+            
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalUploadedImgData = e.target.result;
+                    const imgNode = document.createElement('img');
+                    imgNode.src = globalUploadedImgData;
+                    imgNode.className = "preview-thumbnail";
+                    previewZone.appendChild(imgNode);
+                    printToBot("Image loaded into temporary storage for verification preview.");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // فحص باقة تمييز الـ VIP للعملاء
+        function publishCustomerAdWithVipCheck() {
+            const title = document.getElementById('form-ad-title').value;
+            const price = document.getElementById('form-ad-price').value;
+            const address = document.getElementById('form-ad-address').value;
+            const phone = document.getElementById('form-ad-owner-phone').value;
+            const whatsapp = document.getElementById('form-ad-owner-whatsapp').value;
+            const desc = document.getElementById('form-ad-desc').value;
+
+            if(!title || !price || !address || !phone || !whatsapp) {
+                return alert("يرجى ملء كافة الحقول الأساسية وتسجيل أرقام الاتصال والواتساب لنشر الإعلان وتفعيله بنجاح.");
+            }
+
+            // فحص البوت الاحترافي الصارم والمخفي تماماً 24/24 ساعة قبل النشر الفعلي
+            const botViolationFlag = runInvisibleAdBotScan(title, desc);
+            
+            if (botViolationFlag) {
+                userViolationCount++;
+                printToBot(`CRITICAL WARN: Auto-moderation caught inappropriate text input. Event intercepted.`);
+                
+                if (userViolationCount === 1) {
+                    // التنبيه الأول للعميل بأنه في خطر
+                    alert("🚨 تحذير أمني عاجل من بوت مسارك الآن:\nلقد تم رصد كلمات غير لائقة أو غير مناسبة في بيانات إعلانك! تم حذف الإعلان فوراً وقبل إدراجه لحماية المنصة. إن قمت بهذا الموقف مرة أخرى فستعرض نفسك للعقوبات الصارمة لحماية أمن الموقع.");
+                } else if (userViolationCount >= 2) {
+                    // المرة الثانية: قفل حساب العميل نهائياً ومنعه من النشر تماماً
+                    alert("❌ رسالة إدارية نهائية:\nلقد قمت بإعادة تكرار هذا الموقف وإدراج نصوص غير لائقة مجدداً. بناءً على شروط الأمان، تم حظر حسابك تماماً من موقع مسارك الآن، ولا يمكنك الدخول أو استخدام المنصة مجدداً.");
+                    document.getElementById('submit-ad-btn').disabled = true;
+                    document.getElementById('submit-ad-btn').style.background = "#7f1d1d";
+                    document.getElementById('submit-ad-btn').innerText = "تم حظر حسابك نهائياً ❌";
+                }
+                return; // إيقاف دالة النشر نهائياً ومنع الكرت من الاندماج
+            }
+
+            let isVip = confirm("هل ترغب بوضع إعلانك في باقة الـ VIP الذهبية لزيادة المشاهدات 10 أضعاف؟");
+            if(isVip) {
+                alert("يرجى تفعيل تمييز خمس نجوم للموقع ليظهر إعلانك في الصدارة المطلقة دائماً! ⭐⭐⭐⭐⭐");
+                executeFinalPublish(true);
+            } else {
+                executeFinalPublish(false);
+            }
+        }
+
+        // نشر إعلانات العملاء مع روابط تواصل ديناميكية مربوطة تلقائياً بالعميل
+        function executeFinalPublish(isPremiumVip) {
+            const sectionId = document.getElementById('form-ad-section').value;
+            const title = document.getElementById('form-ad-title').value;
+            const price = document.getElementById('form-ad-price').value;
+            const currency = document.getElementById('form-ad-currency').value; 
+            const address = document.getElementById('form-ad-address').value;
+            const desc = document.getElementById('form-ad-desc').value;
+            const ownerPhone = document.getElementById('form-ad-owner-phone').value;
+            const ownerWhatsapp = document.getElementById('form-ad-owner-whatsapp').value;
+
+            const targetGrid = document.getElementById(sectionId);
+            if(!targetGrid) return;
+
+            const card = document.createElement('div');
+            card.className = isPremiumVip ? "ad-card vip-premium-style" : "ad-card featured-top";
+
+            let finalImageHTML = "";
+            if(globalUploadedImgData) {
+                finalImageHTML = `<img src="${globalUploadedImgData}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                finalImageHTML = `<i class="fas fa-bullhorn" style="font-size:45px; color:var(--green-light);"></i>`;
+            }
+
+            card.innerHTML = `
+                ${isPremiumVip ? '<span class="badge-vip-premium">👑 VIP خمس نجوم</span>' : '<span class="badge-star-featured">⭐ إعلان متميز</span>'}
+                <div class="ad-image-box" style="background-color:#e2e8f0; display:flex; align-items:center; justify-content:center;">
+                    ${finalImageHTML}
+                </div>
+                <div class="ad-details">
+                    <h3>${title} ${isPremiumVip ? '⭐⭐⭐⭐⭐' : ''}</h3>
+                    <p>${desc || 'لا توجد تفاصيل إضافية متوفرة حالياً.'}</p>
+                    <div class="ad-address"><i class="fas fa-map-marker-alt"></i> ${address}</div>
+                    <div class="ad-price">${parseInt(price).toLocaleString()} ${currency}</div>
+                </div>
+                <div class="ad-actions">
+                    <button class="btn-action-sell" onclick="triggerAutoBotSale('${title}', ${currency === 'ل.س' ? price : 0})">إتمام الصفقة وحجز المنتج</button>
+                    <a href="https://wa.me/${ownerWhatsapp}?text=مرحباً، أنا متواجد على موقع مسارك الآن وأرغب في الاستفسار عن إعلانك: ${title}" target="_blank" class="btn-ad-whatsapp"><i class="fab fa-whatsapp"></i> واتساب</a>
+                    <a href="tel:${ownerPhone}" class="btn-ad-phone"><i class="fas fa-phone-alt"></i> اتصال</a>
+                </div>
+            `;
+
+            targetGrid.insertBefore(card, targetGrid.firstChild);
+            
+            showNotification(isPremiumVip ? `👑 مبروك! تم تثبيت إعلانك الـ VIP بنجاح الحفظ صدارة!` : `🚀 تم نشر إعلانك بنجاح وبـ (${currency}) في صدارة قسمك!`);
+            printToBot(`New ad verified by backend engine. VIP: ${isPremiumVip}. Contact phone: ${ownerPhone}`);
+            
+            // تنظيف الحقول لبدء إعلان جديد
+            document.getElementById('form-ad-title').value = '';
+            document.getElementById('form-ad-price').value = '';
+            document.getElementById('form-ad-address').value = '';
+            document.getElementById('form-ad-owner-phone').value = '';
+            document.getElementById('form-ad-owner-whatsapp').value = '';
+            document.getElementById('form-ad-desc').value = '';
+            document.getElementById('form-ad-file').value = '';
+            document.getElementById('photo-preview-zone').innerHTML = "";
+            globalUploadedImgData = "";
+        }
+    </script>
+</body>
+</html>
